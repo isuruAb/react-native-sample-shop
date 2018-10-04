@@ -12,15 +12,15 @@ class Splash extends Component{
 }
 const styles =StyleSheet.create({
     container:{
-        backgroundColor:'green',
+        backgroundColor:'#f7c744',
         flex:1,
         alignItems:'center',
         justifyContent:'center',
     },
     title:{
-        fontWeight:'bold',
-        fontSize:35,
-        color:'white'
+        fontWeight:'300',
+        fontSize:45,
+        color:'#fff'
     }
 })
 export default Splash;

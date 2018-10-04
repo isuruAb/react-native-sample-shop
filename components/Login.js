@@ -10,7 +10,8 @@ import {
     SafeAreaView,
     Keyboard,
     TouchableOpacity,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Platform
 } from 'react-native';
 
 class Login extends Component {
@@ -20,12 +21,13 @@ class Login extends Component {
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle='light-content' />
                 <KeyboardAvoidingView
-                    behavior='padding'
-                    style={styles.container} >
+                    behavior={(Platform.OS === 'ios') ? "padding" : null}
+                    style={styles.container}
+                >
                     <TouchableWithoutFeedback
                         style={styles.container}
                         onPress={Keyboard.dismiss}>
-                        <View style={styles.logoContainer}>
+                        <View style={styles.logoContainer} >
 
                             <View style={styles.logoContainer}>
                                 <Image
@@ -74,8 +76,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     logoContainer: {
+
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: (Platform.OS === 'ios') ? "center" : null,
         flex: 1
     },
     logo: {
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         //height: 200,
         padding: 20,
-        //backgroundColor: '#f7f7f7',
+        backgroundColor: '#fff',
     },
     input: {
         height: 40,
@@ -108,11 +111,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7c744',
         paddingVertical: 10
     },
-    buttonText:{
-        textAlign:'center',
-        color:'#fff',
-        fontSize:18,
-        fontWeight:'bold'
+    buttonText: {
+        textAlign: 'center',
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold'
     }
 })
 export default Login;
