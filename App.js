@@ -6,8 +6,8 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, ToolbarAndroid, View, ActivityIndicator } from 'react-native';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -18,12 +18,24 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  state = { animating: true }
+  closeActivityIndicator = () => setTimeout(() => this.setState({ 
+    animating: false }), 6000)
+
+
+  componentDidMount = () => this.closeActivityIndicator()
+
   render() {
+    const animating = this.state.animating
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+      <View  style = {styles.container}>
+            <ActivityIndicator
+               animating = {animating}
+               color = '#bc2b78'
+               size = "large"
+               style = {styles.activityIndicator}/>
+ 
       </View>
     );
   }
@@ -36,6 +48,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80
+ },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
