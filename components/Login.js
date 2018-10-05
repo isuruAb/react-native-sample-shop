@@ -19,7 +19,7 @@ class Login extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <StatusBar barStyle='light-content' />
+                <StatusBar barStyle={(Platform.OS === 'ios') ? "dark-content" : 'light-content'} />
                 <KeyboardAvoidingView
                     behavior={(Platform.OS === 'ios') ? "padding" : null}
                     style={styles.container}

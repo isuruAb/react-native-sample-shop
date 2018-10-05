@@ -6,20 +6,21 @@ import React,{Component} from 'react';
 import {name as appName} from './app.json';
 import Splash from './components/Splash';
 import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
 
-class Main extends Component{
+class DashboardMain extends Component{
     constructor(props){
         super(props);
         this.state={currenttScreen:'Splash'};
         setTimeout(()=>{
-            this.setState({currenttScreen:'Login'})
+            this.setState({currenttScreen:'Dashboard'})
         },3000)
     }
     render(){
         const {currenttScreen}=this.state;
-        let mainscreen=currenttScreen==='Splash'?<Splash />:<Login/>
+        let mainscreen=currenttScreen==='Splash'?<Splash />:<Dashboard/>
         return mainscreen
     }
 }
-AppRegistry.registerComponent(appName, () => Main);
+AppRegistry.registerComponent(appName, () => DashboardMain);
