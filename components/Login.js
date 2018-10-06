@@ -11,11 +11,36 @@ import {
     Keyboard,
     TouchableOpacity,
     KeyboardAvoidingView,
-    Platform
+    Platform,
+    AsyncStorage
 } from 'react-native';
 
 class Login extends Component {
+    
+    onPressSignInButton() {
 
+        fetch('http://localhost:3000/api/user_token', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                auth: {
+                    email: 'admin@elephant.com',
+                    password: 'passElephant',
+                }
+            }),
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                AsyncStorage.setItem('token', responseJson.jwt);
+                AsyncStorage.getItem('token').then((value) => {console.log(value);});
+            })
+            .catch((error) => {
+                console.error(error);
+            });;
+
+    }
     render() {
         return (
             <SafeAreaView style={styles.container}>
@@ -52,7 +77,7 @@ class Login extends Component {
                                     autoCorrect={false}
                                     ref={'txtPassword'}
                                 />
-                                <TouchableOpacity style={styles.buttonContainer}>
+                                <TouchableOpacity style={styles.buttonContainer} onPress={this.onPressSignInButton}>
                                     <Text style={styles.buttonText}>
                                         Sign In
                                     </Text>

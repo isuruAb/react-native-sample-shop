@@ -23,4 +23,4 @@ class DashboardMain extends Component{
         return mainscreen
     }
 }
-AppRegistry.registerComponent(appName, () => DashboardMain);
+AppRegistry.registerComponent(appName, () => Login);
