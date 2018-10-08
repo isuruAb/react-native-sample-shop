@@ -16,8 +16,14 @@ import {
 } from 'react-native';
 
 class Login extends Component {
-    
-    onPressSignInButton() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            password: ''
+        };
+    }
+    onPressSignInButton = () => {
 
         fetch('http://localhost:3000/api/user_token', {
             method: 'POST',
@@ -25,21 +31,31 @@ class Login extends Component {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                auth: {
-                    email: 'admin@elephant.com',
-                    password: 'passElephant',
+            body: JSON.stringify(
+                {
+                    "auth": {
+                        "email": this.state.username,
+                        "password": this.state.password
+                    }
                 }
-            }),
+            ),
         }).then((response) => response.json())
             .then((responseJson) => {
                 AsyncStorage.setItem('token', responseJson.jwt);
-                AsyncStorage.getItem('token').then((value) => {console.log(value);});
+                AsyncStorage.getItem('token').then((value) => { console.log(value); });
             })
             .catch((error) => {
                 console.error(error);
             });;
 
+    }
+    changeUsername(username) {
+        this.setState({ username: username });
+        console.log(username);
+    }
+    changePass(password) {
+        this.setState({ password });
+        console.log(password);
     }
     render() {
         return (
@@ -68,12 +84,16 @@ class Login extends Component {
                                     keyboardType='email-address'
                                     returnKeyType='next'
                                     autoCorrect={false}
+                                    value={this.state.username}
+                                    onChangeText={username => this.changeUsername(username)}
                                     onSubmitEditing={() => this.refs.txtPassword.focus()} />
                                 <TextInput style={styles.input}
                                     placeholder='password'
                                     placeholderTextColor='#0f0f0f'
                                     returnKeyType='go'
                                     secureTextEntry
+                                    value={this.state.password}
+                                    onChangeText={password => this.changePass(password)}
                                     autoCorrect={false}
                                     ref={'txtPassword'}
                                 />
