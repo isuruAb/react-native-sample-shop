@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, StatusBar, Image, Platform } from 'react-native';
 
-class Splash extends Component {
+class DashboardMain extends Component {
+    constructor(props) {
+        super(props);
+        const {navigate}=this.props.navigation;
+        setTimeout(() => {
+            navigate("SplashScreen",{});
+        }, 3000)
+    }
     render() {
+        const { currenttScreen } = this.state;
+        let mainscreen = currenttScreen === 'Splash' ? <Splash /> : <Dashboard />
+        return mainscreen
+    }
+}
+
+class Splash extends Component {
+    static navigationoptions={
+        title:'Splash Screen'
+    }
+    render() {
+       
         return (
             <View style={styles.container}>
                 <StatusBar  barStyle={(Platform.OS === 'ios') ? "dark-content" : 'light-content'} />

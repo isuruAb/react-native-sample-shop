@@ -14,8 +14,10 @@ import {
     Platform,
     AsyncStorage
 } from 'react-native';
+const util = require('util')
 
 class Login extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -24,6 +26,7 @@ class Login extends Component {
         };
     }
     onPressSignInButton = () => {
+        var { navigate } = this.props.navigation;
 
         fetch('http://localhost:3000/api/user_token', {
             method: 'POST',
@@ -33,6 +36,8 @@ class Login extends Component {
             },
             body: JSON.stringify(
                 {
+                    //     // email: 'admin@elephant.com',
+                    //     // password: 'passElephant',
                     "auth": {
                         "email": this.state.username,
                         "password": this.state.password
@@ -42,7 +47,10 @@ class Login extends Component {
         }).then((response) => response.json())
             .then((responseJson) => {
                 AsyncStorage.setItem('token', responseJson.jwt);
-                AsyncStorage.getItem('token').then((value) => { console.log(value); });
+                AsyncStorage.getItem('token').then((value) => { 
+                    navigate("DashboardScreen",{value});
+                 });
+                
             })
             .catch((error) => {
                 console.error(error);
@@ -51,13 +59,12 @@ class Login extends Component {
     }
     changeUsername(username) {
         this.setState({ username: username });
-        console.log(username);
     }
     changePass(password) {
         this.setState({ password });
-        console.log(password);
     }
     render() {
+        console.log("this.props.navigation=" + util.inspect(this.props.navigation, false, null));
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle={(Platform.OS === 'ios') ? "dark-content" : 'light-content'} />
