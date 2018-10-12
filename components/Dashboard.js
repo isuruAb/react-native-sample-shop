@@ -5,7 +5,9 @@ import {
     Text,
     StyleSheet,
     SafeAreaView,
-    Image
+    Image,
+    TouchableOpacity,
+
 } from 'react-native';
 
 class Dashboard extends Component {
@@ -27,17 +29,22 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             itemList: [
-                { id: 1, adTitle: 'Name of Item 1', adContent: ' description goes here. this is a demo content to fill the space.', image: 'https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg' },
-                { id: 2, adTitle: 'Name of Item 2', adContent: ' description goes here. this is a demo content to fill the space.', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' },
-                { id: 3, adTitle: 'Name of Item 3', adContent: ' description goes here. this is a demo content to fill the space.', image: 'https://cdn.shopify.com/s/files/1/2201/6013/collections/Jewellery-PS6801-1000-ES6101-2000.jpg' },
-                { id: 4, adTitle: 'Name of Item 4', adContent: ' description goes here. this is a demo content to fill the space.', image: 'https://www.lalithaajewellery.com/upload/product/lalithaa_599ef3f7028a2.png' },
-                { id: 5, adTitle: 'Name of Item 5', adContent: ' description goes here. this is a demo content to fill the space.', image: 'https://www.lalithaajewellery.com/upload/product/lalithaa_599ef3f7028a2.png' },
-                { id: 6, adTitle: 'Name of Item 6', adContent: ' description goes here. this is a demo content to fill the space.', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' },
-                { id: 7, adTitle: 'Name of Item 7', adContent: ' description goes here. this is a demo content to fill the space.', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' }]
+                { id: 1, adTitle: 'Name of Item 1', adContent: ' description goes here. this is a demo content to fill the space.',price:'1200', image: 'https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg' },
+                { id: 2, adTitle: 'Name of Item 2', adContent: ' description goes here. this is a demo content to fill the space.',price:'900', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' },
+                { id: 3, adTitle: 'Name of Item 3', adContent: ' description goes here. this is a demo content to fill the space.',price:'3200', image: 'https://cdn.shopify.com/s/files/1/2201/6013/collections/Jewellery-PS6801-1000-ES6101-2000.jpg' },
+                { id: 4, adTitle: 'Name of Item 4', adContent: ' description goes here. this is a demo content to fill the space.',price:'4200', image: 'https://www.lalithaajewellery.com/upload/product/lalithaa_599ef3f7028a2.png' },
+                { id: 5, adTitle: 'Name of Item 5', adContent: ' description goes here. this is a demo content to fill the space.',price:'2200', image: 'https://www.lalithaajewellery.com/upload/product/lalithaa_599ef3f7028a2.png' },
+                { id: 6, adTitle: 'Name of Item 6', adContent: ' description goes here. this is a demo content to fill the space.',price:'2440', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' },
+                { id: 7, adTitle: 'Name of Item 7', adContent: ' description goes here. this is a demo content to fill the space.',price:'2200', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' }]
         };
     }
     listOfNames = () => {
 
+    }
+    onPressMoreDetails = (item) => {
+        var { navigate } = this.props.navigation;
+        console.log('dash',item);
+        navigate("SingleScreen",{item});
     }
     render() {
         const state = this.state;
@@ -51,17 +58,22 @@ class Dashboard extends Component {
                     <FlatList
                         data={state.itemList}
                         renderItem={({ item }) => (
-                            <View style={styles.listItem}>
-                                <Image
-                                    style={styles.image}
-                                    source={{ uri: item.image }}
-                                />
-                                <View style={styles.content}>
-                                    <Text style={styles.adTitle}>{item.adTitle}</Text>
-                                    <Text style={styles.adContent}>{item.adContent}</Text>
-                                </View>
+                            <View>
 
+                            <TouchableOpacity style={styles.listItem} onPress={()=>this.onPressMoreDetails(item)}>
+                                    <Image
+                                        style={styles.image}
+                                        source={{ uri: item.image }}
+                                    />
+                                    <View style={styles.content}>
+                                        <Text style={styles.adTitle}>{item.adTitle}</Text>
+                                        <Text style={styles.adContent}>{item.adContent}</Text>
+                                        <Text style={styles.price}>VND {item.price} </Text>
+                                    </View>
+                            </TouchableOpacity>
                             </View>
+
+
                         )}
                     />
                 </View>
@@ -71,7 +83,7 @@ class Dashboard extends Component {
 }
 const styles = StyleSheet.create({
     titleContainer: {
-        height: 60,
+        height: 80,
         backgroundColor: '#f7c744',
         justifyContent: "center",
         alignItems: 'center',
@@ -81,7 +93,7 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     listItem: {
-        height: 100,
+        height: 120,
         margin: 10,
         flexDirection: 'row',
         borderWidth: 1,
@@ -99,12 +111,24 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         margin: 10
     },
+    price:{
+        fontWeight: '400',
+        fontSize: 15,
+        color:'red'
+    },
     adTitle: {
         fontWeight: '600',
         fontSize: 16,
         margin: 5
     },
+
     adContent: {
+
+    },
+    buttonContainer: {
+
+    },
+    buttonText: {
 
     },
     container: {
