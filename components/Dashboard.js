@@ -55,13 +55,10 @@ class Dashboard extends Component {
             <SafeAreaView style={styles.container}>
 
                 <View>
-                    {/* <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Jewellery</Text>
-                    </View> */}
                     <FlatList
                         data={state.itemList}
                         renderItem={({ item }) => (
-                            <View>
+                            <View style={styles.itemContainer}>
 
                                 <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
                                     <Image
@@ -97,11 +94,15 @@ const styles = StyleSheet.create({
     },
     listItem: {
         height: 120,
-        margin: 10,
+        margin: 5,
+        marginTop: 10,
         flexDirection: 'row',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#000'
+
+    },
+    itemContainer:{
+        height: 130,
+        borderBottomWidth: 1,
+        borderBottomColor: '#c6c6c6'
     },
     image: {
         height: 80,

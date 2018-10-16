@@ -36,16 +36,10 @@ class Single extends Component {
             singleItem: this.props.navigation.state.params.item,
         };
     }
-    listOfNames = () => {
 
-    }
     render() {
         const state = this.state;
         var singleItem = state.singleItem;
-        console.log("aaa", singleItem.id);
-        const Imgs = singleItem.image.map((img, i) => {
-            console.log('img',img)})
-        ;
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={styles.contentContainer}>
