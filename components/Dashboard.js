@@ -21,7 +21,9 @@ class Dashboard extends Component {
         },
         headerTitleStyle: {
             color: '#fff',
-            fontSize: 25
+            fontSize: 25,
+            textAlign: "center",
+            flex: 1,
         },
         headerLeft: null
     };
@@ -29,13 +31,13 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             itemList: [
-                { id: 1, adTitle: 'Name of Item 1', adContent: ' description goes here. this is a demo content to fill the space.',price:'1200', image: 'https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg' },
-                { id: 2, adTitle: 'Name of Item 2', adContent: ' description goes here. this is a demo content to fill the space.',price:'900', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' },
-                { id: 3, adTitle: 'Name of Item 3', adContent: ' description goes here. this is a demo content to fill the space.',price:'3200', image: 'https://cdn.shopify.com/s/files/1/2201/6013/collections/Jewellery-PS6801-1000-ES6101-2000.jpg' },
-                { id: 4, adTitle: 'Name of Item 4', adContent: ' description goes here. this is a demo content to fill the space.',price:'4200', image: 'https://www.lalithaajewellery.com/upload/product/lalithaa_599ef3f7028a2.png' },
-                { id: 5, adTitle: 'Name of Item 5', adContent: ' description goes here. this is a demo content to fill the space.',price:'2200', image: 'https://www.lalithaajewellery.com/upload/product/lalithaa_599ef3f7028a2.png' },
-                { id: 6, adTitle: 'Name of Item 6', adContent: ' description goes here. this is a demo content to fill the space.',price:'2440', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' },
-                { id: 7, adTitle: 'Name of Item 7', adContent: ' description goes here. this is a demo content to fill the space.',price:'2200', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' }]
+                { id: 1, adTitle: 'Name of Item 1', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '1200', image: 'https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg' },
+                { id: 2, adTitle: 'Name of Item 2', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '900', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' },
+                { id: 3, adTitle: 'Name of Item 3', adTag: ['western', 'White gold', 'pendant'], adContent: ' description goes here. this is a demo content to fill the space.', price: '3200', image: 'https://cdn.shopify.com/s/files/1/2201/6013/collections/Jewellery-PS6801-1000-ES6101-2000.jpg' },
+                { id: 4, adTitle: 'Name of Item 4', adTag: ['western', 'White gold', 'rose gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '4200', image: 'https://www.eqvvs.co.uk/images/ted-baker-jewellery-evaniar-enchanted-heart-pendant-p4319-87428_image.jpg' },
+                { id: 5, adTitle: 'Name of Item 5', adTag: ['western', 'White gold', 'pearl'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2200', image: 'https://images-na.ssl-images-amazon.com/images/I/615JCt72MXL._UY695_.jpg' },
+                { id: 6, adTitle: 'Name of Item 6', adTag: ['western', 'White gold', 'necklace'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2440', image: 'https://www.soganijewellers4u.com/image/cache/catalog/newlogo/VHS361-5-1000x1000.jpg' },
+                { id: 7, adTitle: 'Name of Item 7', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2200', image: 'https://ajs.com.sg/admin/views/subcategory/020218021431.png' }]
         };
     }
     listOfNames = () => {
@@ -43,8 +45,8 @@ class Dashboard extends Component {
     }
     onPressMoreDetails = (item) => {
         var { navigate } = this.props.navigation;
-        console.log('dash',item);
-        navigate("SingleScreen",{item});
+        console.log('dash', item);
+        navigate("SingleScreen", { item });
     }
     render() {
         const state = this.state;
@@ -60,7 +62,7 @@ class Dashboard extends Component {
                         renderItem={({ item }) => (
                             <View>
 
-                            <TouchableOpacity style={styles.listItem} onPress={()=>this.onPressMoreDetails(item)}>
+                                <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
                                     <Image
                                         style={styles.image}
                                         source={{ uri: item.image }}
@@ -70,7 +72,7 @@ class Dashboard extends Component {
                                         <Text style={styles.adContent}>{item.adContent}</Text>
                                         <Text style={styles.price}>VND {item.price} </Text>
                                     </View>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
                             </View>
 
 
@@ -111,10 +113,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         margin: 10
     },
-    price:{
+    price: {
         fontWeight: '400',
         fontSize: 15,
-        color:'red'
+        color: 'red'
     },
     adTitle: {
         fontWeight: '600',

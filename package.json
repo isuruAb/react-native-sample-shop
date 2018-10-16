@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.5.0",
     "react-native": "0.57.1",
+    "react-native-swiper": "^1.5.13",
     "react-navigation": "^2.17.0",
     "util": "^0.11.0"
   },
