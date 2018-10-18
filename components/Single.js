@@ -37,6 +37,10 @@ class Single extends Component {
         };
     }
 
+
+    _onPressBuyMe=(item)=>{
+
+    }
     render() {
         const state = this.state;
         var singleItem = state.singleItem;
@@ -66,7 +70,7 @@ class Single extends Component {
                     </View>
 
                 </ScrollView>
-                <TouchableOpacity onPress={this._onPressBuyMe} style={styles.buyMeButton}>
+                <TouchableOpacity onPress={() => this._onPressBuyMe(singleItem)} style={styles.buyMeButton}>
 
                     <Text style={styles.buttonText}>Buy Me</Text>
                 </TouchableOpacity>
