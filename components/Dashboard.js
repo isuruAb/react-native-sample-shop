@@ -9,9 +9,11 @@ import {
     TouchableOpacity,
 
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class Dashboard extends Component {
-    static navigationOptions = {
+
+    static navigationOptions = ({ navigation }) => ({
         title: 'Jewellery',
         titleColor: '#fff',
         headerStyle: {
@@ -25,30 +27,49 @@ class Dashboard extends Component {
             textAlign: "center",
             flex: 1,
         },
-        headerLeft: null
-    };
+        headerLeft: null,
+        headerRight: (
+            <View>
+                <TouchableOpacity style={{ marginRight: 10 }} onPress={() => navigation.state.params.onPressCart()}>
+                    <Icon name="shopping-cart" size={30} color="#fff" />
+                </TouchableOpacity>
+            </View>
+        ),
+    });
+
     constructor(props) {
         super(props);
         this.state = {
             itemList: [
-                { id: 1, adTitle: 'Name of Item 1', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '1200', image: ['https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg',
-                'https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg'] },
-                { id: 2, adTitle: 'Name of Item 2', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '900', image: ['https://ajs.com.sg/admin/views/subcategory/020218021431.png','https://ajs.com.sg/admin/views/subcategory/020218021431.png']  },
-                { id: 3, adTitle: 'Name of Item 3', adTag: ['western', 'White gold', 'pendant'], adContent: ' description goes here. this is a demo content to fill the space.', price: '3200', image: ['https://cdn.shopify.com/s/files/1/2201/6013/collections/Jewellery-PS6801-1000-ES6101-2000.jpg','https://cdn.shopify.com/s/files/1/2201/6013/collections/Jewellery-PS6801-1000-ES6101-2000.jpg'] },
-                { id: 4, adTitle: 'Name of Item 4', adTag: ['western', 'White gold', 'rose gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '4200', image: ['https://www.eqvvs.co.uk/images/ted-baker-jewellery-evaniar-enchanted-heart-pendant-p4319-87428_image.jpg','https://www.eqvvs.co.uk/images/ted-baker-jewellery-evaniar-enchanted-heart-pendant-p4319-87428_image.jpg'] },
-                { id: 5, adTitle: 'Name of Item 5', adTag: ['western', 'White gold', 'pearl'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2200', image: ['https://images-na.ssl-images-amazon.com/images/I/615JCt72MXL._UY695_.jpg','https://images-na.ssl-images-amazon.com/images/I/615JCt72MXL._UY695_.jpg'] },
-                { id: 6, adTitle: 'Name of Item 6', adTag: ['western', 'White gold', 'necklace'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2440', image: ['https://www.soganijewellers4u.com/image/cache/catalog/newlogo/VHS361-5-1000x1000.jpg','https://www.soganijewellers4u.com/image/cache/catalog/newlogo/VHS361-5-1000x1000.jpg'] },
-                { id: 7, adTitle: 'Name of Item 7', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2200', image: ['https://ajs.com.sg/admin/views/subcategory/020218021431.png','https://ajs.com.sg/admin/views/subcategory/020218021431.png'] }]
+                {
+                    id: 1, adTitle: 'Name of Item 1', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '1200', image: ['https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg',
+                        'https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg']
+                },
+                { id: 2, adTitle: 'Name of Item 2', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '900', image: ['https://ajs.com.sg/admin/views/subcategory/020218021431.png', 'https://ajs.com.sg/admin/views/subcategory/020218021431.png'] },
+                { id: 3, adTitle: 'Name of Item 3', adTag: ['western', 'White gold', 'pendant'], adContent: ' description goes here. this is a demo content to fill the space.', price: '3200', image: ['https://cdn.shopify.com/s/files/1/2201/6013/collections/Jewellery-PS6801-1000-ES6101-2000.jpg', 'https://cdn.shopify.com/s/files/1/2201/6013/collections/Jewellery-PS6801-1000-ES6101-2000.jpg'] },
+                { id: 4, adTitle: 'Name of Item 4', adTag: ['western', 'White gold', 'rose gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '4200', image: ['https://www.eqvvs.co.uk/images/ted-baker-jewellery-evaniar-enchanted-heart-pendant-p4319-87428_image.jpg', 'https://www.eqvvs.co.uk/images/ted-baker-jewellery-evaniar-enchanted-heart-pendant-p4319-87428_image.jpg'] },
+                { id: 5, adTitle: 'Name of Item 5', adTag: ['western', 'White gold', 'pearl'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2200', image: ['https://images-na.ssl-images-amazon.com/images/I/615JCt72MXL._UY695_.jpg', 'https://images-na.ssl-images-amazon.com/images/I/615JCt72MXL._UY695_.jpg'] },
+                { id: 6, adTitle: 'Name of Item 6', adTag: ['western', 'White gold', 'necklace'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2440', image: ['https://www.soganijewellers4u.com/image/cache/catalog/newlogo/VHS361-5-1000x1000.jpg', 'https://www.soganijewellers4u.com/image/cache/catalog/newlogo/VHS361-5-1000x1000.jpg'] },
+                { id: 7, adTitle: 'Name of Item 7', adTag: ['indian', 'gold'], adContent: ' description goes here. this is a demo content to fill the space.', price: '2200', image: ['https://ajs.com.sg/admin/views/subcategory/020218021431.png', 'https://ajs.com.sg/admin/views/subcategory/020218021431.png'] }]
         };
     }
     listOfNames = () => {
 
     }
+
     onPressMoreDetails = (item) => {
         var { navigate } = this.props.navigation;
         console.log('dash', item);
         navigate("SingleScreen", { item });
     }
+    onPressCart = () => {
+        var { navigate } = this.props.navigation;
+        navigate("CartScreen", {});
+    }
+    componentDidMount() {
+        this.props.navigation.setParams({ onPressCart: this.onPressCart })
+    }
+
     render() {
         const state = this.state;
         return (
@@ -99,7 +120,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
 
     },
-    itemContainer:{
+    itemContainer: {
         height: 130,
         borderBottomWidth: 1,
         borderBottomColor: '#c6c6c6'
@@ -139,6 +160,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'column',
+    },
+    cartBtn: {
+        margin: 5
     }
 })
 export default Dashboard;

@@ -24,8 +24,7 @@ class Cart extends Component {
             fontSize: 25,
             textAlign: "center",
             flex: 1,
-        },
-        headerLeft: null
+        }
     };
     constructor(props) {
         super(props);
