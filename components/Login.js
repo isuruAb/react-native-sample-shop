@@ -28,7 +28,7 @@ class Login extends Component {
     onPressSignInButton = () => {
         var { navigate } = this.props.navigation;
 
-        fetch('http://localhost:3000/api/user_token', {
+        fetch('http://localhost:3000/api/users/login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -36,17 +36,16 @@ class Login extends Component {
             },
             body: JSON.stringify(
                 {
-                    //     // email: 'admin@elephant.com',
-                    //     // password: 'passElephant',
-                    "auth": {
-                        "email": this.state.username,
+                    //     // email: 'isuru',
+                    //     // password: 'password',
+                        "username": this.state.username,
                         "password": this.state.password
-                    }
+                    
                 }
             ),
         }).then((response) => response.json())
             .then((responseJson) => {
-                AsyncStorage.setItem('token', responseJson.jwt);
+                AsyncStorage.setItem('token', responseJson.token);
                 AsyncStorage.getItem('token').then((value) => { 
                     navigate("DashboardScreen",{value});
                  });
