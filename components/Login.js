@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+    Alert,
     View,
     StyleSheet,
     Text,
@@ -22,7 +23,9 @@ class Login extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            loginError: false,
+            loginErrorMessage: ''
         };
     }
     onPressSignInButton = () => {
@@ -38,32 +41,55 @@ class Login extends Component {
                 {
                     //     // email: 'isuru',
                     //     // password: 'password',
-                        "username": this.state.username,
-                        "password": this.state.password
-                    
+                    "username": this.state.username,
+                    "password": this.state.password
+
                 }
             ),
         }).then((response) => response.json())
             .then((responseJson) => {
-                AsyncStorage.setItem('token', responseJson.token);
-                AsyncStorage.getItem('token').then((value) => { 
-                    navigate("DashboardScreen",{value});
-                 });
-                
+                if (responseJson.status == 500) {
+                    this.setState({ loginError: true, loginErrorMessage: 'Please check your username and password again' })
+                }
+                else {
+                    AsyncStorage.setItem('token', responseJson.token);
+                    AsyncStorage.getItem('token').then((value) => {
+                        navigate("DashboardScreen", { value });
+                    });
+                }
+
             })
             .catch((error) => {
+                this.setState({ loginError: true });
                 console.error(error);
-            });;
-
+            });
     }
+
+
+
     changeUsername(username) {
         this.setState({ username: username });
     }
     changePass(password) {
         this.setState({ password });
     }
+    componentDidMount() {
+
+
+    }
     render() {
-        console.log("this.props.navigation=" + util.inspect(this.props.navigation, false, null));
+        if (this.state.loginError) {
+            console.log("done");
+            Alert.alert(
+                'Login Failed',
+                this.state.loginErrorMessage,
+                [
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false }
+            )
+        }
+        //console.log("this.props.navigation=" + util.inspect(this.props.navigation, false, null));
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle={(Platform.OS === 'ios') ? "dark-content" : 'light-content'} />
@@ -114,7 +140,6 @@ class Login extends Component {
                     </TouchableWithoutFeedback>
 
                 </KeyboardAvoidingView>
-
             </SafeAreaView>
 
         )
