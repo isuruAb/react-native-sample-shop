@@ -5,7 +5,7 @@ import Single from './components/Single';
 import Cart from './components/Cart';
 
 const Navigation = createStackNavigator({
-    //LoginScreen: { screen: Login },
+    LoginScreen: { screen: Login },
     DashboardScreen: { screen: Dashboard },
     SingleScreen: { screen: Single },
     CartScreen: { screen: Cart }
