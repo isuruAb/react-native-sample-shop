@@ -6,7 +6,9 @@ import {
     StyleSheet,
     SafeAreaView,
     Image,
-    ScrollView
+    ScrollView,
+    AsyncStorage
+
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 
@@ -38,8 +40,18 @@ class Single extends Component {
     }
 
 
-    _onPressBuyMe=(item)=>{
-
+    _onPressBuyMe = (item) => {
+        AsyncStorage.getItem('addedItems').then((value) => {
+            if (value == null) {
+                AsyncStorage.setItem('addedItems', JSON.stringify([]));
+            }
+            else {
+                var arr = JSON.parse(value);
+                console.log('that array',arr);
+                arr.push(item);
+                AsyncStorage.setItem('addedItems', JSON.stringify(arr));
+            }
+        });
     }
     render() {
         const state = this.state;

@@ -7,7 +7,7 @@ import {
     SafeAreaView,
     Image,
     TouchableOpacity,
-
+    AsyncStorage
 } from 'react-native';
 
 class Cart extends Component {
@@ -29,7 +29,7 @@ class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            inCart:[]
+            inCart: []
         };
     }
     listOfNames = () => {
@@ -37,8 +37,29 @@ class Cart extends Component {
     }
     onPressMoreDetails = (item) => {
         var { navigate } = this.props.navigation;
-        console.log('dash', item);
         navigate("SingleScreen", { item });
+    }
+    componentWillMount() {
+        AsyncStorage.getItem('addedItems').then((value) => {
+            var v = JSON.parse(value);
+            var obj = {};
+            for (var i = 0, len = v.length; i < len; i++) {
+                var k=v[i]['qty'];
+                if(!obj[v[i]['id']]){
+                    obj[v[i]['id']] = v[i];
+                    obj[v[i]['id']]['qty']=0;
+                }
+                obj[v[i]['id']]['qty']+=1;
+            }
+            console.log("obj", obj);
+            var val = [];
+            for (var key in obj) {
+                val.push(obj[key]);
+            }
+            this.setState({ inCart: JSON.parse(value) })
+            console.log("aaaa", this.state.inCart)
+        })
+
     }
     render() {
         const state = this.state;
