@@ -112,6 +112,7 @@ class Login extends Component {
                             <View style={styles.infoContainer}>
                                 <TextInput style={styles.input}
                                     placeholder='username/email'
+                                    autoCapitalize={false}
                                     placeholderTextColor='#0f0f0f'
                                     keyboardType='email-address'
                                     returnKeyType='next'
