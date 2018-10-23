@@ -5,9 +5,10 @@ import App from './App';
 import React, { Component } from 'react';
 import { name as appName } from './app.json';
 import Splash from './components/Splash';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+
 import Navigator from './Navigator';
+import { Provider } from 'react-redux';
+import store from './store';
 
 class DashboardMain extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class DashboardMain extends Component {
     }
     render() {
         const { currenttScreen } = this.state;
-        let mainscreen = currenttScreen === 'Splash' ? <Splash /> : <Navigator />
+        let mainscreen = currenttScreen === 'Splash' ? <Splash /> : <Provider store={store}><Navigator /></Provider>
         return mainscreen
     }
 }

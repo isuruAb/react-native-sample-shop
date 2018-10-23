@@ -43,7 +43,6 @@ class Login extends Component {
                     //     // password: 'password',
                     "username": this.state.username,
                     "password": this.state.password
-
                 }
             ),
         }).then((response) => response.json())
@@ -195,4 +194,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     }
 })
+
 export default Login;
