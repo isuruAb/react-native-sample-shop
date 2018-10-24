@@ -87,8 +87,6 @@ class Dashboard extends Component {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-
-
                         )}
                     />
                 </View>
