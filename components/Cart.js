@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     AsyncStorage
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class Cart extends Component {
     static navigationOptions = {
@@ -39,27 +40,33 @@ class Cart extends Component {
         var { navigate } = this.props.navigation;
         navigate("SingleScreen", { item });
     }
+    _onPressDeleteItem(item) {
+        var state = this.state.inCart;
+        var index = state.map(function (e) { return e.id; }).indexOf(item.id);
+        state.splice(index, 1);
+        this.setState({ inCart: state });
+        AsyncStorage.setItem('addedItems', JSON.stringify(this.state.inCart));
+    }
+
     componentWillMount() {
         AsyncStorage.getItem('addedItems').then((value) => {
             var v = JSON.parse(value);
             var obj = {};
             for (var i = 0, len = v.length; i < len; i++) {
-                var k=v[i]['qty'];
-                if(!obj[v[i]['id']]){
+                var k = v[i]['qty'];
+                if (!obj[v[i]['id']]) {
                     obj[v[i]['id']] = v[i];
-                    obj[v[i]['id']]['qty']=0;
+                    obj[v[i]['id']]['qty'] = 0;
                 }
-                obj[v[i]['id']]['qty']+=1;
+                obj[v[i]['id']]['qty'] += 1;
             }
             console.log("obj", obj);
             var val = [];
             for (var key in obj) {
                 val.push(obj[key]);
             }
-            this.setState({ inCart: JSON.parse(value) })
-            console.log("aaaa", this.state.inCart)
+            this.setState({ inCart: val })
         })
-
     }
     render() {
         const state = this.state;
@@ -72,20 +79,28 @@ class Cart extends Component {
                     </View> */}
                     <FlatList
                         data={state.inCart}
+                        extraData={this.state}
                         renderItem={({ item }) => (
-                            <View>
-
+                            <View style={styles.itemContainer}>
                                 <View style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
                                     <Image
                                         style={styles.image}
                                         source={{ uri: item.image[0] }}
                                     />
                                     <View style={styles.content}>
-                                        <Text style={styles.adTitle}>{item.adTitle}</Text>
-                                        <Text style={styles.price}>VND {item.price} </Text>
-                                        <TouchableOpacity onPress={() => this._onPressBuyMe(singleItem)}>
-                                            <Text style={styles.buttonText}>X</Text>
-                                        </TouchableOpacity>
+                                        <View style={styles.details}>
+                                            <Text style={styles.adTitle}>{item.adTitle}</Text>
+                                            <Text style={styles.qty}>Qty: {item.qty} </Text>
+                                            <Text style={styles.price}>VND {item.price * item.qty} </Text>
+                                        </View>
+                                        <View style={styles.closeBtnWrapper}>
+                                            <TouchableOpacity style={styles.closeBtn} onPress={() => this._onPressDeleteItem(item)}>
+                                                <Icon name="close" size={25} color="#fff" />
+
+                                            </TouchableOpacity>
+                                        </View>
+
+
                                     </View>
                                 </View>
                             </View>
@@ -97,12 +112,6 @@ class Cart extends Component {
     }
 }
 const styles = StyleSheet.create({
-    titleContainer: {
-        height: 80,
-        backgroundColor: '#f7c744',
-        justifyContent: "center",
-        alignItems: 'center',
-    },
     title: {
         fontSize: 25,
         color: '#fff'
@@ -111,9 +120,6 @@ const styles = StyleSheet.create({
         height: 120,
         margin: 10,
         flexDirection: 'row',
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#000'
     },
     image: {
         height: 80,
@@ -121,10 +127,37 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 10
     },
+    itemContainer: {
+        height: 130,
+        borderBottomWidth: 1,
+        borderBottomColor: '#c6c6c6'
+    },
     content: {
         flex: 2,
-        flexDirection: 'column',
+        flexDirection: 'row',
         margin: 10
+    },
+    details: {
+        flex: 2,
+    },
+    closeBtnWrapper: {
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    closeBtn: {
+        height: 50,
+        width: 50,
+        borderRadius: 90,
+        alignItems: 'center',
+        flexDirection: 'column',
+        backgroundColor: '#F44336',
+        justifyContent: 'center',
+
+    },
+    qty: {
+        fontWeight: '400',
+        fontSize: 15,
     },
     price: {
         fontWeight: '400',
@@ -141,9 +174,6 @@ const styles = StyleSheet.create({
 
     },
     buttonContainer: {
-
-    },
-    buttonText: {
 
     },
     container: {
