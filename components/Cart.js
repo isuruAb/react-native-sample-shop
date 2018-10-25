@@ -10,7 +10,7 @@ import {
     AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { getSelectedProduct } from '../actions/productActions';
+import { getSelectedProduct, deleteSelectedProduct } from '../actions/productActions';
 import { connect } from 'react-redux';
 
 class Cart extends Component {
@@ -43,30 +43,28 @@ class Cart extends Component {
         navigate("SingleScreen", { item });
     }
     _onPressDeleteItem(item) {
-        var state = this.state.inCart;
+        var state = this.props.products.selectedProducts;
         var index = state.map(function (e) { return e.id; }).indexOf(item.id);
         state.splice(index, 1);
-        this.setState({ inCart: state });
-        AsyncStorage.setItem('addedItems', JSON.stringify(this.state.inCart));
+        this.props.deleteSelectedProduct(state);
+       
     }
 
     componentWillMount() {
         this.props.getSelectedProduct();
-        console.log("this.props.products.selectedProducts",this.props.products.selectedProducts)
-
+        console.log("this.props.products.selectedProducts", this.props.products.selectedProducts)
     }
     render() {
         const state = this.props.products.selectedProducts;
         return (
             <SafeAreaView style={styles.container}>
-
                 <View>
                     {/* <View style={styles.titleContainer}>
                         <Text style={styles.title}>Jewellery</Text>
                     </View> */}
                     <FlatList
                         data={state}
-                        extraData={this.state}
+                        extraData={this.props}
                         renderItem={({ item }) => (
                             <View style={styles.itemContainer}>
                                 <View style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
@@ -83,7 +81,6 @@ class Cart extends Component {
                                         <View style={styles.closeBtnWrapper}>
                                             <TouchableOpacity style={styles.closeBtn} onPress={() => this._onPressDeleteItem(item)}>
                                                 <Icon name="close" size={25} color="#fff" />
-
                                             </TouchableOpacity>
                                         </View>
 
@@ -180,6 +177,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getSelectedProduct: () => {
             dispatch(getSelectedProduct());
+        },
+        deleteSelectedProduct: (products) => {
+            dispatch(deleteSelectedProduct(products));
         }
     };
 };
