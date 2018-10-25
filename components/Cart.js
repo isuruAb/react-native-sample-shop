@@ -10,6 +10,8 @@ import {
     AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { getSelectedProduct } from '../actions/productActions';
+import { connect } from 'react-redux';
 
 class Cart extends Component {
     static navigationOptions = {
@@ -49,27 +51,12 @@ class Cart extends Component {
     }
 
     componentWillMount() {
-        AsyncStorage.getItem('addedItems').then((value) => {
-            var v = JSON.parse(value);
-            var obj = {};
-            for (var i = 0, len = v.length; i < len; i++) {
-                var k = v[i]['qty'];
-                if (!obj[v[i]['id']]) {
-                    obj[v[i]['id']] = v[i];
-                    obj[v[i]['id']]['qty'] = 0;
-                }
-                obj[v[i]['id']]['qty'] += 1;
-            }
-            console.log("obj", obj);
-            var val = [];
-            for (var key in obj) {
-                val.push(obj[key]);
-            }
-            this.setState({ inCart: val })
-        })
+        this.props.getSelectedProduct();
+        console.log("this.props.products.selectedProducts",this.props.products.selectedProducts)
+
     }
     render() {
-        const state = this.state;
+        const state = this.props.products.selectedProducts;
         return (
             <SafeAreaView style={styles.container}>
 
@@ -78,7 +65,7 @@ class Cart extends Component {
                         <Text style={styles.title}>Jewellery</Text>
                     </View> */}
                     <FlatList
-                        data={state.inCart}
+                        data={state}
                         extraData={this.state}
                         renderItem={({ item }) => (
                             <View style={styles.itemContainer}>
@@ -182,4 +169,18 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     }
 })
-export default Cart;
+
+const mapStateToProps = (state) => {
+    return {
+        products: state.productReducer
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getSelectedProduct: () => {
+            dispatch(getSelectedProduct());
+        }
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
