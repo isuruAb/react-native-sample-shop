@@ -50,11 +50,16 @@ export function getSelectedProduct() {
 }
 
 export function deleteSelectedProduct(newProductsList) {
-    
         AsyncStorage.setItem('addedItems', JSON.stringify(newProductsList))
         return {
                 type: "GET_ALL_SELECTED_PRODCUCTS",
                 payload: newProductsList
             };
+}
 
+export function checkoutProducts(finalProducts){
+        return{
+            type: "CHECKOUT_ORDER",
+            payload: finalProducts
+        };
 }

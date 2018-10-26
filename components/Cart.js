@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 
 class Cart extends Component {
     static navigationOptions = {
-        title: 'In Your Cart',
+        title: 'Your Cart',
         titleColor: '#fff',
         headerStyle: {
             backgroundColor: '#f7c744',
@@ -47,8 +47,14 @@ class Cart extends Component {
         var index = state.map(function (e) { return e.id; }).indexOf(item.id);
         state.splice(index, 1);
         this.props.deleteSelectedProduct(state);
-       
+
     }
+    _onPressCheckoutProducts(products) {
+        var { navigate } = this.props.navigation;
+        console.log('on checkout', products);
+        navigate("CheckoutScreen", { products });
+    }
+
 
     componentWillMount() {
         this.props.getSelectedProduct();
@@ -91,6 +97,10 @@ class Cart extends Component {
                         )}
                     />
                 </View>
+                <TouchableOpacity onPress={() => this._onPressCheckoutProducts(state)} style={styles.buyMeButton}>
+
+                    <Text style={styles.buttonText}>Checkout</Text>
+                </TouchableOpacity>
             </SafeAreaView>
         );
     }
@@ -164,6 +174,22 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'column',
+    },
+    buyMeButton: {
+        backgroundColor: '#41e083',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        textAlign: 'center',
+        alignItems: 'center',
+        padding: 20
+
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 26,
+        fontWeight: '500'
     }
 })
 
