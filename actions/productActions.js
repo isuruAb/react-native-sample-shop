@@ -50,16 +50,40 @@ export function getSelectedProduct() {
 }
 
 export function deleteSelectedProduct(newProductsList) {
-        AsyncStorage.setItem('addedItems', JSON.stringify(newProductsList))
-        return {
-                type: "GET_ALL_SELECTED_PRODCUCTS",
-                payload: newProductsList
-            };
+    AsyncStorage.setItem('addedItems', JSON.stringify(newProductsList))
+    return {
+        type: "GET_ALL_SELECTED_PRODCUCTS",
+        payload: newProductsList
+    };
 }
 
-export function checkoutProducts(finalProducts){
-        return{
-            type: "CHECKOUT_ORDER",
-            payload: finalProducts
-        };
+export function checkoutProducts(finalProducts) {
+    return {
+        type: "CHECKOUT_ORDER",
+        payload: finalProducts
+    };
 }
+export function toggleSearchMode() {
+    return {
+        type: "TO_SEARCH_MODE",
+
+    };
+}
+
+export function getSearchResult(text, token) {
+    return dispatch => fetch('http://localhost:3000/api/v1/products/search?name=' + text, {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            console.log("responseJson", responseJson);
+            dispatch({
+                type: "SEARCH_PRODUCTS",
+                payload: responseJson
+            });
+        })
+}
+

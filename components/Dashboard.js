@@ -7,14 +7,15 @@ import {
     SafeAreaView,
     Image,
     TouchableOpacity,
-
+    TextInput,
+    Modal,
+    AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { getProduct } from '../actions/productActions';
+import { getProduct, toggleSearchMode, getSearchResult } from '../actions/productActions';
 import { connect } from 'react-redux';
 
 class Dashboard extends Component {
-
     static navigationOptions = ({ navigation }) => ({
         title: 'Jewellery',
         titleColor: '#fff',
@@ -31,7 +32,11 @@ class Dashboard extends Component {
         },
         headerLeft: null,
         headerRight: (
-            <View>
+            <View style={styles.rightWrapper}>
+
+                <TouchableOpacity style={{ marginRight: 10 }} onPress={() => navigation.state.params.onPressSearch()}>
+                    <Icon name="search" size={30} color="#fff" />
+                </TouchableOpacity>
                 <TouchableOpacity style={{ marginRight: 10 }} onPress={() => navigation.state.params.onPressCart()}>
                     <Icon name="shopping-cart" size={30} color="#fff" />
                 </TouchableOpacity>
@@ -42,7 +47,7 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            itemList: this.props.products.products
+            itemList: this.props.products.products,
         };
     }
     listOfNames = () => {
@@ -51,31 +56,44 @@ class Dashboard extends Component {
 
     onPressMoreDetails = (item) => {
         var { navigate } = this.props.navigation;
-        console.log('dash', item);
         navigate("SingleScreen", { item });
     }
+
+
     onPressCart = () => {
         var { navigate } = this.props.navigation;
         navigate("CartScreen", {});
     }
+
     componentDidMount() {
-        this.props.navigation.setParams({ onPressCart: this.onPressCart })
+        this.props.navigation.setParams({
+            onPressCart: this.onPressCart,
+            onPressSearch: this.props.toggleSearchMode,
+        })
         this.props.getProduct();
 
+
+    }
+    async searchProducts(text) {
+        let token = await AsyncStorage.getItem('token');
+        this.props.getSearchResult(text, token);
     }
 
     render() {
         const itemList = this.props.products.products;
+        console.log("this.props.products.searchResult", this.props.products);
+
+        console.log("this.props.products.searchResult", this.props.products.searchResult.length);
+
         return (
             <SafeAreaView style={styles.container}>
-
                 <View>
                     <FlatList
                         data={itemList}
                         renderItem={({ item }) => (
                             <View style={styles.itemContainer}>
 
-                                <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
+                                <TouchableOpacity style={styles.listItem} onPress={(item) => this.onPressMoreDetails(item)}>
                                     <Image
                                         style={styles.image}
                                         source={{ uri: item.image[0] }}
@@ -90,11 +108,99 @@ class Dashboard extends Component {
                         )}
                     />
                 </View>
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.props.products.searchMode}
+                >
+                    <View style={styles.masterWrapper} >
+                        <View style={styles.searchWrapper} >
+                            <TouchableOpacity
+                                style={styles.searchBackBtn}
+                                onPress={() => {
+                                    this.props.toggleSearchMode();
+                                }}>
+                                <Icon name="arrow-circle-left" size={30} color="#fff" />
+                            </TouchableOpacity>
+                            <View style={styles.searchFieldWrapper}>
+                                <TextInput
+                                    editable={true}
+                                    maxLength={40}
+                                    style={styles.searchField}
+                                    onChangeText={(text) => this.searchProducts(text)}
+                                    placeholder='Search'
+                                    placeholderTextColor='#0f0f0f'
+                                    ref={'searchField'}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.searchResultWrapper}>
+                            <FlatList
+                                display={this.props.products.searchResult.length <= 0 ? 'none' : 'flex'}
+                                data={this.props.products.searchResult}
+                                renderItem={({ item }) => (
+                                    <View style={styles.itemContainer} >
+                                        <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)} >
+                                            <Image
+                                                style={styles.image}
+                                                source={{ uri: item.images.split(",")[1] }}
+                                            />
+                                            <View style={styles.content}>
+                                                <Text style={styles.adTitle}>{item.name}</Text>
+                                                <Text style={styles.adContent}>{item.description.substring(0, 70)}...</Text>
+                                                <Text style={styles.price}>VND {item.price} </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                )}
+
+                            />
+                        </View>
+                    </View>
+                </Modal>
             </SafeAreaView>
         );
     }
 }
 const styles = StyleSheet.create({
+    rightWrapper: {
+        flexDirection: 'row'
+    },
+    masterWrapper: {
+        flexDirection: 'column',
+        flex: 1
+    },
+    searchResultWrapper: {
+        flex: 9
+    },
+    searchWrapper: {
+        flexDirection: "row",
+        margin: 22,
+        flex: 1,
+        height: 70
+    },
+    searchBackBtn: {
+        margin: 10,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        height: 50,
+        borderRadius: 100,
+        backgroundColor: '#f7c744',
+
+    },
+    searchFieldWrapper: {
+        alignContent: "center",
+        justifyContent: "center",
+        flex: 5,
+        height: 70
+    },
+    searchField: {
+        backgroundColor: '#f8f8f8',
+        height: 40,
+        padding: 10,
+        fontSize: 18,
+    },
     titleContainer: {
         height: 80,
         backgroundColor: '#f7c744',
@@ -167,6 +273,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getProduct: () => {
             dispatch(getProduct());
+        },
+        toggleSearchMode: () => {
+            dispatch(toggleSearchMode());
+        },
+        getSearchResult: (text, token) => {
+            dispatch(getSearchResult(text, token));
         }
     };
 };

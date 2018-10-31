@@ -1,7 +1,9 @@
 
 const productInitialState = {
     products: {},
-    selectedProducts:{}
+    selectedProducts: {},
+    searchMode: false,
+    searchResult:[]
 }
 
 const productReducer = (state = productInitialState, action) => {
@@ -18,6 +20,19 @@ const productReducer = (state = productInitialState, action) => {
                 selectedProducts: action.payload,
             }
             break;
+        case "TO_SEARCH_MODE":
+            state = {
+                ...state,
+                searchMode: !state.searchMode,
+            }
+            break;
+        case "SEARCH_PRODUCTS":
+            state = {
+                ...state,
+                searchResult: action.payload
+            }
+            break;
+
     }
     return state;
 }
