@@ -11,6 +11,8 @@ import {
     Modal,
     AsyncStorage
 } from 'react-native';
+import { SearchBar } from 'react-native-elements'
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getProduct, toggleSearchMode, getSearchResult } from '../actions/productActions';
 import { connect } from 'react-redux';
@@ -54,9 +56,9 @@ class Dashboard extends Component {
 
     }
 
-    onPressMoreDetails(item){
+    onPressMoreDetails(item) {
         var { navigate } = this.props.navigation;
-        console.log('item',item);
+        console.log('item', item);
         navigate("SingleScreen", { item });
     }
 
@@ -119,7 +121,16 @@ class Dashboard extends Component {
                                 <Icon name="arrow-circle-left" size={30} color="#fff" />
                             </TouchableOpacity>
                             <View style={styles.searchFieldWrapper}>
-                                <TextInput
+                                <SearchBar
+                                    lightTheme
+                                    clearIcon={{ color: '#f8f8f8' }}
+                                    searchIcon={{ size: 24 }}
+                                    maxLength={40}
+                                    onChangeText={(text) => this.searchProducts(text)}
+                                    style={styles.searchField}
+                                    placeholder='Search...' />
+
+                                {/*               <TextInput
                                     editable={true}
                                     maxLength={40}
                                     style={styles.searchField}
@@ -127,7 +138,7 @@ class Dashboard extends Component {
                                     placeholder='Search'
                                     placeholderTextColor='#0f0f0f'
                                     ref={'searchField'}
-                                />
+                                /> */}
                             </View>
                         </View>
                         <View style={styles.searchResultWrapper}>
