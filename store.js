@@ -8,7 +8,6 @@ const myLogger = (store) => (next) => (action) => {
     next(action)
 };
 
-
 const store = createStore(
     combineReducers({ productReducer }),
     {},

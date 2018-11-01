@@ -54,8 +54,9 @@ class Dashboard extends Component {
 
     }
 
-    onPressMoreDetails = (item) => {
+    onPressMoreDetails(item){
         var { navigate } = this.props.navigation;
+        console.log('item',item);
         navigate("SingleScreen", { item });
     }
 
@@ -65,15 +66,15 @@ class Dashboard extends Component {
         navigate("CartScreen", {});
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.navigation.setParams({
             onPressCart: this.onPressCart,
             onPressSearch: this.props.toggleSearchMode,
         })
-        this.props.getProduct();
-
-
+        let token = await AsyncStorage.getItem('token');
+        this.props.getProduct(token);
     }
+
     async searchProducts(text) {
         let token = await AsyncStorage.getItem('token');
         this.props.getSearchResult(text, token);
@@ -81,10 +82,6 @@ class Dashboard extends Component {
 
     render() {
         const itemList = this.props.products.products;
-        console.log("this.props.products.searchResult", this.props.products);
-
-        console.log("this.props.products.searchResult", this.props.products.searchResult.length);
-
         return (
             <SafeAreaView style={styles.container}>
                 <View>
@@ -92,15 +89,14 @@ class Dashboard extends Component {
                         data={itemList}
                         renderItem={({ item }) => (
                             <View style={styles.itemContainer}>
-
-                                <TouchableOpacity style={styles.listItem} onPress={(item) => this.onPressMoreDetails(item)}>
+                                <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
                                     <Image
                                         style={styles.image}
-                                        source={{ uri: item.image[0] }}
+                                        source={{ uri: item.images.split(",")[0] }}
                                     />
                                     <View style={styles.content}>
-                                        <Text style={styles.adTitle}>{item.adTitle}</Text>
-                                        <Text style={styles.adContent}>{item.adContent}</Text>
+                                        <Text style={styles.adTitle}>{item.name}</Text>
+                                        <Text style={styles.adContent}>{item.description.substring(0, 70)}...</Text>
                                         <Text style={styles.price}>VND {item.price} </Text>
                                     </View>
                                 </TouchableOpacity>
@@ -271,8 +267,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getProduct: () => {
-            dispatch(getProduct());
+        getProduct: (token) => {
+            dispatch(getProduct(token));
         },
         toggleSearchMode: () => {
             dispatch(toggleSearchMode());
