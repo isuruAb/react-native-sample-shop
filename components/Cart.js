@@ -76,11 +76,11 @@ class Cart extends Component {
                                 <View style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
                                     <Image
                                         style={styles.image}
-                                        source={{ uri: item.image[0] }}
+                                        source={{ uri: item.images.split(",")[0] }}
                                     />
                                     <View style={styles.content}>
                                         <View style={styles.details}>
-                                            <Text style={styles.adTitle}>{item.adTitle}</Text>
+                                            <Text style={styles.adTitle}>{item.name}</Text>
                                             <Text style={styles.qty}>Qty: {item.qty} </Text>
                                             <Text style={styles.price}>VND {item.price * item.qty} </Text>
                                         </View>

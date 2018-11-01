@@ -56,6 +56,9 @@ class Single extends Component {
     render() {
         const state = this.state;
         var singleItem = state.singleItem;
+        // console.log('singleItem',state);
+
+         let imgArr=singleItem.images.split(",");
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -69,16 +72,16 @@ class Single extends Component {
                         nextButton={<Text style={styles.btnColor}>›</Text>}	>
                         <Image
                             style={styles.image}
-                            source={{ uri: singleItem.image[0] }}
+                            source={{ uri: imgArr[0]}}
                         />
                         <Image
                             style={styles.image}
-                            source={{ uri: singleItem.image[1] }}
-                        />
+                            source={{ uri: imgArr[1] }}
+                        /> 
                     </Swiper>
                     <View style={styles.content}>
-                        <Text style={styles.adTitle}>{singleItem.adTitle}</Text>
-                        <Text style={styles.adContent}>{singleItem.adContent}</Text>
+                        <Text style={styles.adTitle}>{singleItem.name}</Text>
+                        <Text style={styles.adContent}>{singleItem.description}</Text>
                     </View>
 
                 </ScrollView>
