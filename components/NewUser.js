@@ -20,16 +20,12 @@ import {
 const util = require('util')
 
 class NewUser extends Component {
-    static navigationOptions = {  header: null };
+    static navigationOptions = { header: null };
 
 
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
-            loginError: false,
-            loginErrorMessage: ''
         };
     }
     onPressSignInButton = () => {
@@ -39,31 +35,11 @@ class NewUser extends Component {
 
     onPressSignUpButton = () => {
         var { navigate } = this.props.navigation;
-        navigate("LoginScreen", {});
-    }
-
-    changeUsername(username) {
-        this.setState({ username: username });
-    }
-    changePass(password) {
-        this.setState({ password });
-    }
-    componentDidMount() {
-
+        navigate("SignupScreen", {});
     }
 
     render() {
-        if (this.state.loginError) {
-            console.log("done");
-            Alert.alert(
-                'Login Failed',
-                this.state.loginErrorMessage,
-                [
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ],
-                { cancelable: false }
-            )
-        }
+
         //console.log("this.props.navigation=" + util.inspect(this.props.navigation, false, null));
         return (
             <SafeAreaView style={styles.container}>
@@ -127,7 +103,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#0f0f0f',
         margin: 5,
-        opacity: 0.5
+        opacity: 0.8
     },
     infoContainer: {
         position: 'absolute',
@@ -137,20 +113,18 @@ const styles = StyleSheet.create({
         //height: 200,
         padding: 20,
     },
-    input: {
-        height: 40,
-        backgroundColor: '#f7f7f7',
-        paddingHorizontal: 10,
-        margin: 10
-    },
     buttonContainer: {
         backgroundColor: '#f7c744',
-        paddingVertical: 10
+        paddingVertical: 10,
+        borderRadius: 5
+
     },
     signUpButtonContainer: {
         paddingVertical: 10,
         marginTop: 10,
-        backgroundColor: '#ea8546'
+        backgroundColor: '#ea8546',
+        borderRadius: 5
+
     },
     buttonText: {
         textAlign: 'center',

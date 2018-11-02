@@ -17,10 +17,10 @@ import {
 } from 'react-native';
 const util = require('util')
 
-class Login extends Component {
+class Signup extends Component {
     static navigationOptions = {
         headerStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: '#FFA726',
             height: 60,
             elevation: null,
             borderBottomWidth: 0,
@@ -28,52 +28,55 @@ class Login extends Component {
         }
     };
 
+
     constructor(props) {
         super(props);
         this.state = {
             username: '',
             password: '',
-            loginError: false,
-            loginErrorMessage: ''
+            confPass: '',
+            signupError: false,
+            signupErrorMessage: ''
         };
     }
-    onPressSignInButton = () => {
+    onPressSignUpButton = () => {
         var { navigate } = this.props.navigation;
-
-        fetch('http://localhost:3000/api/users/login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(
-                {
-                    //     // email: 'isuru',
-                    //     // password: 'password',
-                    "username": this.state.username,
-                    "password": this.state.password
-                }
-            ),
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson.status == 500 || responseJson.error) {
-                    this.setState({ loginError: true, loginErrorMessage: 'Please check your username and password again' })
-                }
-                else {
-                    AsyncStorage.setItem('token', responseJson.token);
-                    AsyncStorage.getItem('token').then((value) => {
-                        navigate("DashboardScreen", { value });
-                    });
-                }
-
+        if (this.state.password != this.state.confPass) {
+            this.setState({
+                signupError: true,
+                signupErrorMessage: 'Password does not match'
             })
-            .catch((error) => {
-                this.setState({ loginError: true });
-                // console.error(error);
-            });
+        }
+        else {
+            console.log('signup');
+            // fetch('http://localhost:3000/api/users/signup', {
+            //     method: 'POST',
+            //     headers: {
+            //         Accept: 'application/json',
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(
+            //         {
+            //             "username": this.state.username,
+            //             "password": this.state.password
+            //         }
+            //     ),
+            // }).then((response) => response.json())
+            //     .then((responseJson) => {
+            //         if (responseJson.status == 500) {
+            //             this.setState({ signupError: true, signupErrorMessage: 'Please check your username and password again' })
+            //         }
+            //         else {
+            //             navigate("LoginScreen", { value });
+            //         }
+            //     })
+            //     .catch((error) => {
+            //         this.setState({ signupError: true });
+            //         console.error(error);
+            //     });
+        }
+
     }
-
-
 
     changeUsername(username) {
         this.setState({ username: username });
@@ -81,18 +84,16 @@ class Login extends Component {
     changePass(password) {
         this.setState({ password });
     }
-    componentDidMount() {
-
-
+    changeConfPass(confPass) {
+        this.setState({ confPass });
     }
     render() {
-        if (this.state.loginError) {
-            console.log("done");
+        if (this.state.signupError) {
             Alert.alert(
                 'Login Failed',
-                this.state.loginErrorMessage,
+                this.state.signupErrorMessage,
                 [
-                    { text: 'OK', onPress: () => this.setState({ loginError: false }) },
+                    { text: 'OK', onPress: () => this.setState({ signupError: false }) },
                 ],
                 { cancelable: false }
             )
@@ -115,7 +116,7 @@ class Login extends Component {
                                     style={styles.logo}
                                     source={require('../images/logo.png')}
                                 />
-                                <Text style={styles.title}>Login to your account</Text>
+                                <Text style={styles.title}>Be ready for an awesome shoping experience</Text>
                             </View>
                             <View style={styles.infoContainer}>
                                 <TextInput style={styles.input}
@@ -138,32 +139,39 @@ class Login extends Component {
                                     autoCorrect={false}
                                     ref={'txtPassword'}
                                 />
-                                <TouchableOpacity style={styles.buttonContainer} onPress={this.onPressSignInButton}>
+                                <TextInput style={styles.input}
+                                    placeholder='Confirm Password'
+                                    placeholderTextColor='#0f0f0f'
+                                    returnKeyType='next'
+                                    secureTextEntry
+                                    value={this.state.Cpassword}
+                                    onChangeText={confPassword => this.changeConfPass(confPassword)}
+                                    autoCorrect={false}
+                                    ref={'confirmtxtPassword'}
+                                />
+                                <TouchableOpacity style={styles.signUpButtonContainer} onPress={this.onPressSignUpButton}>
                                     <Text style={styles.buttonText}>
-                                        Sign In
+                                        SIGN UP
                                     </Text>
                                 </TouchableOpacity>
-
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
 
                 </KeyboardAvoidingView>
             </SafeAreaView>
-
         )
     }
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#FFA726',
         flexDirection: 'column',
     },
     logoContainer: {
-
         alignItems: 'center',
-        justifyContent: (Platform.OS === 'ios') ? "center" : null,
+        //justifyContent: (Platform.OS === 'ios') ? "center" : null,
         flex: 1
     },
     logo: {
@@ -173,9 +181,8 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         fontSize: 18,
-        color: '#0f0f0f',
+        color: '#fff',
         margin: 5,
-        opacity: 0.5
     },
     infoContainer: {
         position: 'absolute',
@@ -184,7 +191,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         //height: 200,
         padding: 20,
-        backgroundColor: '#fff',
     },
     input: {
         height: 40,
@@ -193,11 +199,10 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 5
     },
-    buttonContainer: {
-        backgroundColor: '#f7c744',
+    signUpButtonContainer: {
+        backgroundColor: '#E65100',
         paddingVertical: 10,
         borderRadius: 5
-
     },
     buttonText: {
         textAlign: 'center',
@@ -207,4 +212,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Login;
+export default Signup;
