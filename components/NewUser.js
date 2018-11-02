@@ -20,6 +20,8 @@ import {
 const util = require('util')
 
 class NewUser extends Component {
+    static navigationOptions = {  header: null };
+
 
     constructor(props) {
         super(props);
