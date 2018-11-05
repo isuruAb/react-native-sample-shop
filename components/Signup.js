@@ -49,31 +49,31 @@ class Signup extends Component {
         }
         else {
             console.log('signup');
-            // fetch('http://localhost:3000/api/users/signup', {
-            //     method: 'POST',
-            //     headers: {
-            //         Accept: 'application/json',
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(
-            //         {
-            //             "username": this.state.username,
-            //             "password": this.state.password
-            //         }
-            //     ),
-            // }).then((response) => response.json())
-            //     .then((responseJson) => {
-            //         if (responseJson.status == 500) {
-            //             this.setState({ signupError: true, signupErrorMessage: 'Please check your username and password again' })
-            //         }
-            //         else {
-            //             navigate("LoginScreen", { value });
-            //         }
-            //     })
-            //     .catch((error) => {
-            //         this.setState({ signupError: true });
-            //         console.error(error);
-            //     });
+            fetch('http://localhost:3000/api/users/signup', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    {
+                        "username": this.state.username,
+                        "password": this.state.password
+                    }
+                ),
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.status == 401) {
+                        this.setState({ signupError: true, signupErrorMessage: 'This username is already taken' })
+                    }
+                    else {
+                        navigate("LoginScreen", {  });
+                    }
+                })
+                .catch((error) => {
+                    this.setState({ signupError: true });
+                    console.error(error);
+                });
         }
 
     }
