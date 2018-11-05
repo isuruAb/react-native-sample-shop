@@ -14,6 +14,8 @@ import {
 import { SearchBar } from 'react-native-elements'
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import IconEnctyo from 'react-native-vector-icons/Entypo';
+
 import { getProduct, toggleSearchMode, getSearchResult } from '../actions/productActions';
 import { connect } from 'react-redux';
 
@@ -37,11 +39,15 @@ class Dashboard extends Component {
             <View style={styles.rightWrapper}>
 
                 <TouchableOpacity style={{ marginRight: 10 }} onPress={() => navigation.state.params.onPressSearch()}>
-                    <Icon name="search" size={30} color="#fff" />
+                    <Icon name="search" size={20} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ marginRight: 10 }} onPress={() => navigation.state.params.onPressCart()}>
-                    <Icon name="shopping-cart" size={30} color="#fff" />
+                    <Icon name="shopping-cart" size={20} color="#fff" />
                 </TouchableOpacity>
+                <TouchableOpacity style={{ marginRight: 10 }} onPress={() => navigation.state.params.onPressCart()}>
+                    <IconEnctyo name="dots-three-vertical" size={20} color="#fff" />
+                </TouchableOpacity>
+
             </View>
         ),
     });
