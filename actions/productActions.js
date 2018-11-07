@@ -2,7 +2,7 @@ import {
     AsyncStorage
 } from 'react-native';
 export function getProduct(token) {
-    console.log("tokentokentoken",token);
+    console.log("tokentokentoken", token);
     return dispatch => fetch('http://localhost:3000/api/v1/products/all', {
         headers: {
             Accept: 'application/json',
@@ -84,6 +84,12 @@ export function toggleSearchMode() {
 }
 
 export function getSearchResult(text, token) {
+    if (text === '') {
+        return {
+            type: "SEARCH_PRODUCTS",
+            payload: []
+        };
+    }
     return dispatch => fetch('http://localhost:3000/api/v1/products/search?name=' + text, {
         headers: {
             Accept: 'application/json',
@@ -93,10 +99,13 @@ export function getSearchResult(text, token) {
     }).then((response) => response.json())
         .then((responseJson) => {
             console.log("responseJson", responseJson);
-            dispatch({
-                type: "SEARCH_PRODUCTS",
-                payload: responseJson
-            });
+            setTimeout(() => {
+                dispatch({
+                    type: "SEARCH_PRODUCTS",
+                    payload: responseJson
+                });
+            }, 2000)
         })
+
 }
 

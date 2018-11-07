@@ -86,6 +86,7 @@ class Dashboard extends Component {
     async searchProducts(text) {
         let token = await AsyncStorage.getItem('token');
         this.props.getSearchResult(text, token);
+
     }
 
     render() {
