@@ -6,8 +6,10 @@ import Cart from './components/Cart';
 import Checkout from './components/Checkout';
 import NewUser from './components/NewUser';
 import Signup from './components/Signup';
+import Home from './components/Home';
 
 const Navigation = createStackNavigator({
+    HomeScreen: { screen: Home },
     NewUserScreen: { screen: NewUser },
     SignupScreen: {screen: Signup},
     DashboardScreen: { screen: Dashboard },
@@ -15,6 +17,7 @@ const Navigation = createStackNavigator({
     CartScreen: { screen: Cart },
     CheckoutScreen: { screen: Checkout },
     LoginScreen: { screen: Login },
+
 });
 
 export default Navigation;

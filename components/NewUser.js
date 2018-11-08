@@ -1,4 +1,3 @@
-import LinearGradient from 'react-native-linear-gradient';
 import React, { Component } from 'react';
 import {
     Alert,
