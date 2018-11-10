@@ -188,7 +188,7 @@ class Home extends Component {
                                     <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
                                         <Image
                                             style={styles.image}
-                                            source={{ uri: item.images.split(",")[0] }}
+                                            source={{ uri: item.image[0].url }}
                                         />
                                         <View style={styles.content}>
                                             <Text style={styles.adTitle}>{item.name}</Text>
@@ -249,7 +249,7 @@ class Home extends Component {
                                         <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)} >
                                             <Image
                                                 style={styles.image}
-                                                source={{ uri: item.images.split(",")[1] }}
+                                                source={{ uri: item.image[0].url }}
                                             />
                                             <View style={styles.content}>
                                                 <Text style={styles.adTitle}>{item.name}</Text>
