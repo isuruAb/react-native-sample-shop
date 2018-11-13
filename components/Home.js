@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import IconEnctyo from 'react-native-vector-icons/Entypo';
 
 import { getProduct, toggleSearchMode, getSearchResult } from '../actions/productActions';
+import { getBanner } from '../actions/bannerActions';
 import { connect } from 'react-redux';
 
 class Home extends Component {
@@ -61,9 +62,9 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            itemList: this.props.products.products,
-        };
+        // this.state = {
+        //     itemList: this.props.products.products,
+        // };
     }
     listOfNames = () => {
 
@@ -87,6 +88,8 @@ class Home extends Component {
             onPressSearch: this.props.toggleSearchMode,
         })
         let token = await AsyncStorage.getItem('token');
+        this.props.getBanner(token);
+
         this.props.getProduct(token);
     }
 
@@ -101,6 +104,10 @@ class Home extends Component {
     render() {
 
         const itemList = this.props.products.products;
+        const bannerList = this.props.banners.banners;
+        //const name = (bannerList[0] || {}).url;
+
+        console.log('bannerLiist',bannerList);
         return (
             <SafeAreaView style={styles.container}>
 
@@ -117,12 +124,12 @@ class Home extends Component {
                         >
                             <Image
                                 style={styles.sliderImages}
-                                source={{ uri: "https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg" }}
+                                source={{ uri: (bannerList[0] || {}).url}}
                             />
-                            <Image
+                             <Image
                                 style={styles.sliderImages}
-                                source={{ uri: "https://images-na.ssl-images-amazon.com/images/I/71yPA9JDiiL._UL1500_.jpg" }}
-                            />
+                                source={{ uri: (bannerList[1] || {}).url }}
+                            /> 
 
                         </Swiper>
                         <View style={styles.catList}>
@@ -410,7 +417,8 @@ const styles = StyleSheet.create({
 })
 const mapStateToProps = (state) => {
     return {
-        products: state.productReducer
+        products: state.productReducer,
+        banners: state.bannerReducer
     };
 };
 
@@ -418,6 +426,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getProduct: (token) => {
             dispatch(getProduct(token));
+        },
+        getBanner: (token) => {
+            dispatch(getBanner(token));
         },
         toggleSearchMode: () => {
             dispatch(toggleSearchMode());
