@@ -1,19 +1,26 @@
-
 const productInitialState = {
     products: {},
     selectedProducts: {},
     searchMode: false,
-    searchResult:[]
+    searchResult: [],
+    allProducts: {}
 }
 
 const productReducer = (state = productInitialState, action) => {
     switch (action.type) {
-        case "GET_ALL_PRODCUCTS":
+        case "GET_ALL_CATEGORY_PRODCUCTS":
             state = {
                 ...state,
                 products: action.payload,
             }
             break;
+        case "GET_ALL_PRODCUCTS":
+            state = {
+                ...state,
+                allProducts: action.payload,
+            }
+            break;
+
         case "GET_ALL_SELECTED_PRODCUCTS":
             state = {
                 ...state,
