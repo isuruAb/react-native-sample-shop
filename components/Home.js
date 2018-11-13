@@ -19,7 +19,7 @@ import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconEnctyo from 'react-native-vector-icons/Entypo';
 
-import { getProduct, toggleSearchMode, getSearchResult } from '../actions/productActions';
+import { getAllProduct, toggleSearchMode, getSearchResult } from '../actions/productActions';
 import { getBanner } from '../actions/bannerActions';
 import { connect } from 'react-redux';
 
@@ -89,8 +89,7 @@ class Home extends Component {
         })
         let token = await AsyncStorage.getItem('token');
         this.props.getBanner(token);
-
-        this.props.getProduct(token);
+        this.props.getAllProduct(token);
     }
 
     async searchProducts(text) {
@@ -100,14 +99,17 @@ class Home extends Component {
     }
     goToCategory(category) {
         console.log("goto category", category);
+        var { navigate } = this.props.navigation;
+        // console.log('item', item);
+        navigate("DashboardScreen", { category });
     }
     render() {
 
-        const itemList = this.props.products.products;
+        const itemList = this.props.products.allProducts;
         const bannerList = this.props.banners.banners;
         //const name = (bannerList[0] || {}).url;
 
-        console.log('bannerLiist',bannerList);
+        console.log('bannerLiist', bannerList);
         return (
             <SafeAreaView style={styles.container}>
 
@@ -124,28 +126,28 @@ class Home extends Component {
                         >
                             <Image
                                 style={styles.sliderImages}
-                                source={{ uri: (bannerList[0] || {}).url}}
+                                source={{ uri: (bannerList[0] || {}).url }}
                             />
-                             <Image
+                            <Image
                                 style={styles.sliderImages}
                                 source={{ uri: (bannerList[1] || {}).url }}
-                            /> 
+                            />
 
                         </Swiper>
                         <View style={styles.catList}>
-                            <TouchableOpacity onPress={() => this.goToCategory('diamond')}>
+                            <TouchableOpacity onPress={() => this.goToCategory('Diamonds')}>
                                 <View style={styles.category}>
                                     <Icon name="diamond" size={40} color="#fff" />
-                                    <Text style={styles.catName}>Diamond</Text>
+                                    <Text style={styles.catName}>Diamonds</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.goToCategory('white gold')}>
+                            <TouchableOpacity onPress={() => this.goToCategory('White Gold')}>
                                 <View style={styles.category}>
                                     <Icon name="balance-scale" size={40} color="#fff" />
                                     <Text style={styles.catName}>White Gold</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.goToCategory('gold')}>
+                            <TouchableOpacity onPress={() => this.goToCategory('Gold')}>
                                 <View style={styles.category}>
                                     <Icon name="chain" size={40} color="#fff" />
                                     <Text style={styles.catName}>Gold</Text>
@@ -181,15 +183,16 @@ class Home extends Component {
                                     <Text style={styles.catName}>Check Quality</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.goToCategory('imitation')}>
+                            <TouchableOpacity onPress={() => this.goToCategory('Silver')}>
                                 <View style={styles.category}>
                                     <Icon name="balance-scale" size={40} color="#fff" />
-                                    <Text style={styles.catName}>Imitation</Text>
+                                    <Text style={styles.catName}>Silver</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
                         <FlatList
                             data={itemList}
+                            extraData={this.props}
                             renderItem={({ item }) => (
                                 <View style={styles.itemContainer}>
                                     <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
@@ -207,9 +210,6 @@ class Home extends Component {
                             )}
                         />
                     </ScrollView>
-
-
-
                 </View>
 
                 <Modal
@@ -251,6 +251,7 @@ class Home extends Component {
                             <FlatList
                                 display={this.props.products.searchResult.length <= 0 ? 'none' : 'flex'}
                                 data={this.props.products.searchResult}
+                                extraData={this.props}
                                 renderItem={({ item }) => (
                                     <View style={styles.itemContainer} >
                                         <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)} >
@@ -424,8 +425,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getProduct: (token) => {
-            dispatch(getProduct(token));
+        getAllProduct: (token) => {
+            dispatch(getAllProduct(token));
         },
         getBanner: (token) => {
             dispatch(getBanner(token));

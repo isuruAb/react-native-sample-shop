@@ -1,9 +1,9 @@
 import {
     AsyncStorage
 } from 'react-native';
-export function getProduct(token) {
-    console.log("tokentokentoken", token);
-    return dispatch => fetch('http://localhost:3000/api/v1/products/all', {
+export function getProduct(token, category) {
+    console.log("tokentokentoken, category", token, category);
+    return dispatch => fetch('http://localhost:3000/api/v1/products/all?tags=' + category, {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -11,9 +11,9 @@ export function getProduct(token) {
         },
     }).then((response) => response.json())
         .then((responseJson) => {
-            console.log("get all products", responseJson);
+            console.log("get all category products", responseJson);
             dispatch({
-                type: "GET_ALL_PRODCUCTS",
+                type: "GET_ALL_CATEGORY_PRODCUCTS",
                 payload: responseJson
             });
         })
@@ -34,6 +34,26 @@ export function getProduct(token) {
     // }
 
 }
+
+export function getAllProduct(token) {
+    console.log("tokentokentoken, category", token);
+    return dispatch => fetch('http://localhost:3000/api/v1/products/all', {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            console.log("get all products", responseJson);
+            dispatch({
+                type: "GET_ALL_PRODCUCTS",
+                payload: responseJson
+            });
+        })
+}
+
+
 
 export function getSelectedProduct() {
     return dispatch => {

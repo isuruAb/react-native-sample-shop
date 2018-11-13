@@ -34,7 +34,6 @@ class Dashboard extends Component {
             textAlign: "center",
             flex: 1,
         },
-        headerLeft: null,
         headerRight: (
             <View style={styles.rightWrapper}>
 
@@ -56,6 +55,8 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             itemList: this.props.products.products,
+            category: this.props.navigation.state.params.category,
+
         };
     }
     listOfNames = () => {
@@ -80,7 +81,7 @@ class Dashboard extends Component {
             onPressSearch: this.props.toggleSearchMode,
         })
         let token = await AsyncStorage.getItem('token');
-        this.props.getProduct(token);
+        this.props.getProduct(token, this.state.category);
     }
 
     async searchProducts(text) {
@@ -96,6 +97,7 @@ class Dashboard extends Component {
                 <View>
                     <FlatList
                         data={itemList}
+                        extraData={this.props}
                         renderItem={({ item }) => (
                             <View style={styles.itemContainer}>
                                 <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)}>
@@ -152,6 +154,7 @@ class Dashboard extends Component {
                             <FlatList
                                 display={this.props.products.searchResult.length <= 0 ? 'none' : 'flex'}
                                 data={this.props.products.searchResult}
+                                extraData={this.props}
                                 renderItem={({ item }) => (
                                     <View style={styles.itemContainer} >
                                         <TouchableOpacity style={styles.listItem} onPress={() => this.onPressMoreDetails(item)} >
@@ -285,8 +288,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getProduct: (token) => {
-            dispatch(getProduct(token));
+        getProduct: (token, category) => {
+            dispatch(getProduct(token, category));
         },
         toggleSearchMode: () => {
             dispatch(toggleSearchMode());
